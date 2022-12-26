@@ -32,7 +32,7 @@
                         <th>Diskon</th>
                         <th>Total Bayar</th>
                        
-                        <th width="15%"><i class="fa fa-cog"></i></th>
+                        <th width="15%"><i class="fa fa-cog"></i>Aksi</th>
                        
                     </thead>
                 </table>

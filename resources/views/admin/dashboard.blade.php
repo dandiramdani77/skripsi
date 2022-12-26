@@ -51,12 +51,12 @@
             <!-- small box -->
             <div class="small-box bg-red">
                 <div class="inner">
-                    <h3>1</h3>
+                    <h3>{{$distributor}}</h3>
 
                     <p>Total Distributor</p>
                 </div>
                 <div class="icon">
-                    <i class="fa fa-first-order"></i>
+                    <i class="fa fa-truck"></i>
                 </div>
                 <a href="{{ route('distributor.index')}}" class="small-box-footer">Lihat <i class="fa fa-arrow-circle-right"></i></a>
             </div>

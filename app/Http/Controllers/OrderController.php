@@ -82,7 +82,7 @@ class OrderController extends Controller
         $detail = OrderDetail::where('id_order', $order->id_order)->get();
         foreach ($detail as $item) {
             $produk = Produk::find($item->id_produk);
-            $produk->stok += $item->jumlah;
+            $produk->stok -= $item->jumlah;
             $produk->update();
         }
 
@@ -122,7 +122,7 @@ class OrderController extends Controller
         foreach ($detail as $item) {
             $produk = Produk::find($item->id_produk);
             if ($produk) {
-                $produk->stok -= $item->jumlah;
+                $produk->stok += $item->jumlah;
                 $produk->update();
             }
             $item->delete();
