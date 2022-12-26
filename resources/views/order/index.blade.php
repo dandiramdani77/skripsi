@@ -27,6 +27,7 @@
                         <th width="5%">No</th>
                         <th>Tanggal</th>
                         <th>Distributor</th>
+                        <th>Retailer</th>
                         <th>Total Item</th>
                         <th>Total Harga</th>
                         <th>Diskon</th>
@@ -62,6 +63,7 @@
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'tanggal'},
                 {data: 'distributor'},
+                {data: 'retailer'},
                 {data: 'total_item'},
                 {data: 'total_harga'},
                 {data: 'diskon'},

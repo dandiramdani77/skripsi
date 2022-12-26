@@ -17,4 +17,8 @@ class Order extends Model
     {
         return $this->belongsTo(Distributor::class, 'id_distributor', 'id_distributor');
     }
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'id_user');
+    }
 }

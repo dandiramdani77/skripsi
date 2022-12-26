@@ -42,6 +42,9 @@ class OrderController extends Controller
             ->editColumn('diskon', function ($order) {
                 return $order->diskon . '%';
             })
+            ->editColumn('retailer', function ($order) {
+                return $order->user->name ?? '';
+            })
             ->addColumn('aksi', function ($order) {
                 return '
                 <div class="btn-group">
@@ -58,6 +61,7 @@ class OrderController extends Controller
     {
         $order = new Order();
         $order->id_distributor = $id;
+        $order->id_user = auth()->id();
         $order->total_item  = 0;
         $order->total_harga = 0;
         $order->diskon      = 0;

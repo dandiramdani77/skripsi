@@ -16,11 +16,14 @@ class BuatOrderTable extends Migration
         Schema::create('order', function (Blueprint $table) {
             $table->increments('id_order');
             $table->integer('id_distributor');
+            $table->integer('id_user');
             $table->integer('total_item');
             $table->integer('total_harga');
             $table->tinyInteger('diskon')->default(0);
             $table->integer('bayar')->default(0);
             $table->timestamps();
+
+            
         });
     }
 
