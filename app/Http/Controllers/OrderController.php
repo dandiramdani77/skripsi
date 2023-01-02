@@ -66,6 +66,7 @@ class OrderController extends Controller
         $order->total_harga = 0;
         $order->diskon      = 0;
         $order->bayar       = 0;
+        $order->status_order='Pending';
         $order->save();
 
         session(['id_order' => $order->id_order]);
@@ -80,7 +81,7 @@ class OrderController extends Controller
         $order->total_item = $request->total_item;
         $order->total_harga = $request->total;
         $order->diskon = $request->diskon;
-        $order->bayar = $request->bayar;
+        $order->bayar = strtok(str_replace(".", "", $request->bayar), "Rp ");
         $order->update();
 
         $detail = OrderDetail::where('id_order', $order->id_order)->get();
@@ -136,4 +137,5 @@ class OrderController extends Controller
 
         return response(null, 204);
     }
+
 }

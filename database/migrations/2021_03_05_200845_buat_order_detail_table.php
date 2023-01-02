@@ -18,6 +18,7 @@ class BuatOrderDetailTable extends Migration
             $table->integer('id_order');
             $table->integer('id_produk');
             $table->integer('harga');
+            $table->integer('jumlah_jual');
             $table->integer('jumlah');
             $table->integer('subtotal');
             $table->timestamps();

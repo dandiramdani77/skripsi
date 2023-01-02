@@ -23,7 +23,7 @@
             </li>
 
             @if (auth()->user()->level == 1)
-            <li class="header">PERHITUNGAN BULLWHIP EFFECT</li>
+            {{-- <li class="header">PERHITUNGAN BULLWHIP EFFECT</li>
             <li>
                 <a href="#">
                     <i class="fa fa-calculator"></i> <span>Perhitungan Biasa</span>
@@ -31,7 +31,7 @@
                 <a href="#">
                     <i class="fa fa-area-chart"></i> <span>Perhitungan Peramalan</span>
                 </a>
-            </li>
+            </li> --}}
             <li class="header">MASTER</li>
             <li>
                 <a href="{{ route('kategori.index') }}">
@@ -49,7 +49,7 @@
                     <i class="fa fa-truck"></i> <span>Distributor</span>
                 </a>
             </li>
-            <li class="header">TRANSAKSI</li>
+            <li class="header">ANALIS BULLWHIP EFFECT</li>
             
             <li>
                 <a href="{{ route('order.index') }}">

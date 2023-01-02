@@ -58,7 +58,7 @@
 
             <!-- Main content -->
             <section class="content">
-                
+
                 @yield('content')
 
             </section>
@@ -91,6 +91,37 @@
             $(selector).append(`<img src="${window.URL.createObjectURL(temporaryFile)}" width="${width}">`);
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if ($message = Session::get('pesan_create'))
+        <script>
+            Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: "{!! $message !!}",
+                button: "OK",
+            })
+        </script>
+    @endif
+    @if ($message = Session::get('pesan_edit'))
+        <script>
+            Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: "{!! $message !!}",
+                button: "OK",
+            })
+        </script>
+    @endif
+    @if ($message = Session::get('pesan_delete'))
+        <script>
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "{!! $message !!}",
+                button: "OK",
+            })
+        </script>
+    @endif
     @stack('scripts')
 </body>
 </html>

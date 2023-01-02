@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\OrderDetail;
 use App\Models\Produk;
 use App\Models\Distributor;
+use App\Models\OrderDetail;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class OrderDetailController extends Controller
 {
@@ -38,6 +39,7 @@ class OrderDetailController extends Controller
             $row['kode_produk'] = '<span class="label label-success">'. $item->produk['kode_produk'] .'</span';
             $row['nama_produk'] = $item->produk['nama_produk'];
             $row['harga']       = 'Rp. '. format_uang($item->harga);
+            $row['jumlah_jual'] = '<input type="number" class="form-control input-sm jumlah_jual" data-id_jual="'. $item->id_order_detail .'" value="'. $item->jumlah_jual .'">';
             $row['jumlah']      = '<input type="number" class="form-control input-sm quantity" data-id="'. $item->id_order_detail .'" value="'. $item->jumlah .'">';
             $row['subtotal']    = 'Rp. '. format_uang($item->subtotal);
             $row['aksi']        = '<div class="btn-group">
@@ -54,6 +56,7 @@ class OrderDetailController extends Controller
                 <div class="total_item hide">'. $total_item .'</div>',
             'nama_produk' => '',
             'harga'       => '',
+            'jumlah_jual' => '',
             'jumlah'      => '',
             'subtotal'    => '',
             'aksi'        => '',
@@ -62,7 +65,7 @@ class OrderDetailController extends Controller
         return datatables()
             ->of($data)
             ->addIndexColumn()
-            ->rawColumns(['aksi', 'kode_produk', 'jumlah'])
+            ->rawColumns(['aksi', 'kode_produk','jumlah_jual','jumlah'])
             ->make(true);
     }
 
@@ -77,19 +80,24 @@ class OrderDetailController extends Controller
         $detail->id_order = $request->id_order;
         $detail->id_produk = $produk->id_produk;
         $detail->harga = $produk->harga;
+        $detail->jumlah_jual = 1;
         $detail->jumlah = 1;
         $detail->subtotal = $produk->harga;
         $detail->save();
-
         return response()->json('Data berhasil disimpan', 200);
     }
 
     public function update(Request $request, $id)
     {
         $detail = OrderDetail::find($id);
-        $detail->jumlah = $request->jumlah;
-        $detail->subtotal = $detail->harga * $request->jumlah;
-        $detail->update();
+        if ($request->jumlah_jual) {
+            $detail->jumlah_jual = $request->jumlah_jual;
+            $detail->update();
+        } else if($request->jumlah) {
+            $detail->jumlah = $request->jumlah;
+            $detail->subtotal = $detail->harga * $request->jumlah;
+            $detail->update();
+        }
     }
 
     public function destroy($id)
@@ -111,5 +119,90 @@ class OrderDetailController extends Controller
         ];
 
         return response()->json($data);
+    }
+    public function beUpdate()
+    {
+        $id_order = OrderDetail::orderBy('id_order_detail', 'DESC')->first();
+
+        $order_detail = OrderDetail::where('id_order', $id_order->id_order)->get();
+        $kuadrat_order = 0;
+        $kuadrat_jual = 0;
+        $pengurangan_order = 0;
+        $pengurangan_jual = 0;
+
+        $total_order = $order_detail->sum('jumlah');
+        $total_jual = $order_detail->sum('jumlah_jual');
+        $total_produk = $order_detail->count();
+        $rata_order = $total_order / $total_produk;
+        $rata_jual = $total_jual / $total_produk;
+
+        foreach ($order_detail as $item) {
+            $pengurangan_order += $item->jumlah - $rata_order;
+            $pengurangan_jual += $item->jumlah_jual - $rata_jual;
+            $kuadrat_order += pow($pengurangan_order, 2);
+            $kuadrat_jual += pow($pengurangan_jual, 2);
+
+            if ($kuadrat_jual == 0 || $kuadrat_order == 0) {
+                return redirect()->route('order.index')->with('pesan_edit', 'Tidak dapat dihitung karena ada pembagian dengan nol atau tidak memiliki data yang cukup.');
+            }
+
+        }
+
+        $deviation_order = sqrt($kuadrat_order / ($total_produk - 1));
+        $deviation_jual = sqrt($kuadrat_jual / ($total_produk - 1));
+        $cv_order = $deviation_order / $rata_order;
+        $cv_jual = $deviation_jual / $rata_jual;
+        $BE = $cv_order / $cv_jual;
+
+        if ($BE <= 1.0) {
+            Order::where('id_order', $id_order->id_order)->update([
+                'status_order' => 'Approved'
+            ]);
+            return redirect()->route('order.index')->with('pesan_edit', 'Order Approved,' . number_format($BE, 2) . ' Bullwhip Effect < 1');
+        } else {
+            return redirect()->route('order.index')->with('pesan_delete', 'Gagal Approved,' . number_format($BE, 2) . ' Bullwhip Effect > 1');
+        }
+
+
+
+
+        // {
+        //     if ($item) {
+        //         $total_order = $order_detail->sum('jumlah');
+        //         $total_jual = $order_detail->sum('jumlah_jual');
+        //         $total_product =$order_detail->count();
+        //         $rata_order = $total_order / $total_product;
+        //         $rata_sales = $total_sales / $total_product;
+        //     foreach ($orderdetail as $item) {
+        //         $pengurangan_order = $item->jumlah - $rata_order;
+        //         $kuadrat_order += pow($pengurangan_order, 2);
+        //         $pengurangan_sales = $item->salesdata - $rata_sales;
+        //         $kuadrat_sales += pow($pengurangan_sales, 2);
+        //     }
+        //         $deviation_order = sqrt($kuadrat_order / ($total_product - 1));
+        //         $deviation_sales = sqrt($kuadrat_sales / ($total_product - 1));
+        //         $cv_order = $deviation_order / $rata_order;
+        //         $cv_sales = $deviation_sales / $rata_sales;
+        //         $BE = $cv_order / $cv_sales;
+
+        //         if ($BE < 1.0) {
+        //             alert('Order Approved,' . number_format($BE, 2) . ' Bullwhip Effect < 1');
+        //             return redirect('order.index');
+        //         }else{
+        //             alert('Order Pending,' . number_format($BE, 2) . ' Bullwhip Effect >= 1');
+        //             return redirect('order_detail.index');
+        //         }
+        //     //         Order::where('id_order', $id)->update([
+        //     //             'status_order' => 'Approved'
+        //     //         ]);
+        //     //         return redirect('order')->with('pesan_edit', 'Order Approved,' . number_format($BE, 2) . ' Bullwhip Effect < 1');
+        //     //     } else {
+
+        //     //         return redirect('order')->with('pesan_delete', 'Order Pending,' . number_format($BE, 2) . ' Bullwhip Effect >= 1');
+        //     //     }
+        //     // } else {
+        //     //     return redirect('order')->with('pesan_edit', 'Order Approved');
+        //     }
+        // }
     }
 }

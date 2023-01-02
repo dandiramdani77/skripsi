@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    Laporan Pendapatan {{ tanggal_indonesia($tanggalAwal, false) }} s/d {{ tanggal_indonesia($tanggalAkhir, false) }}
+    Laporan Data Order {{ tanggal_indonesia($tanggalAwal, false) }} s/d {{ tanggal_indonesia($tanggalAkhir, false) }}
 @endsection
 
 @push('css')
@@ -10,7 +10,7 @@
 
 @section('breadcrumb')
     @parent
-    <li class="active">Laporan</li>
+    <li class="active">Laporan Data Order</li>
 @endsection
 
 @section('content')
@@ -26,10 +26,12 @@
                     <thead>
                         <th width="5%">No</th>
                         <th>Tanggal</th>
-                        <th>Penjualan</th>
-                        <th>Pembelian</th>
-                        <th>Pengeluaran</th>
-                        <th>Pendapatan</th>
+                        <th>Retailer</th>
+                        <th>Kode Produk</th>
+                        <th>Nama Produk</th>
+                        <th>Harga</th>
+                        <th>Jumlah</th>
+                        <th>Sub Total</th>
                     </thead>
                 </table>
             </div>
@@ -57,10 +59,12 @@
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'tanggal'},
-                {data: 'penjualan'},
-                {data: 'pembelian'},
-                {data: 'pengeluaran'},
-                {data: 'pendapatan'}
+                {data: 'retailer'},
+                {data: 'kode_produk'},
+                {data: 'nama_produk'},
+                {data: 'harga'}
+                {data: 'jumlah'}
+                {data: 'subtotal'}
             ],
             dom: 'Brt',
             bSort: false,

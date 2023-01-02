@@ -55,11 +55,15 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/order/data', [OrderController::class, 'data'])->name('order.data');
         Route::get('/order/{id}/create', [OrderController::class, 'create'])->name('order.create');
+       
         Route::resource('/order', OrderController::class)
-            ->except('create');
+       
 
+            ->except('create');
+        
         Route::get('/order_detail/{id}/data', [OrderDetailController::class, 'data'])->name('order_detail.data');
         Route::get('/order_detail/loadform/{diskon}/{total}', [OrderDetailController::class, 'loadForm'])->name('order_detail.load_form');
+        Route::post('/order_detail/beUpdate', [OrderDetailController::class, 'beUpdate'])->name('order_detail.beUpdate');
         Route::resource('/order_detail', OrderDetailController::class)
             ->except('create', 'show', 'edit');
 
@@ -80,13 +84,16 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/order/data', [OrderController::class, 'data'])->name('order.data');
         Route::get('/order/{id}/create', [OrderController::class, 'create'])->name('order.create');
+       
         Route::resource('/order', OrderController::class)
             ->except('create');
-
+        
         Route::get('/order_detail/{id}/data', [OrderDetailController::class, 'data'])->name('order_detail.data');
         Route::get('/order_detail/loadform/{diskon}/{total}', [OrderDetailController::class, 'loadForm'])->name('order_detail.load_form');
+        Route::post('/order_detail/beUpdate', [OrderDetailController::class, 'beUpdate'])->name('order_detail.beUpdate');
         Route::resource('/order_detail', OrderDetailController::class)
             ->except('create', 'show', 'edit');
+        
 
         Route::get('/transaksi/baru', [PenjualanController::class, 'create'])->name('transaksi.baru');
         Route::post('/transaksi/simpan', [PenjualanController::class, 'store'])->name('transaksi.simpan');

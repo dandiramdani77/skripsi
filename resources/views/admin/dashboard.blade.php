@@ -13,7 +13,7 @@
     <!-- Small boxes (Stat box) -->
     <div class="box-body text-center">
         <marquee>
-        <h3>Selamat Datang Anda login sebagai Admin</h3>
+        <h3><font face="Times New Rowman">Selamat Datang Anda Login Sebagai Admin</font></h3>
         </marquee>
     </div>
     <div class="row">

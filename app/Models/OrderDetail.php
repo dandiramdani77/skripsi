@@ -17,4 +17,8 @@ class OrderDetail extends Model
     {
         return $this->hasOne(Produk::class, 'id_produk', 'id_produk');
     }
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'id_orderr', 'id_order');
+    }
 }

@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@include('sweetalert::alert')
+
 @section('title')
     Transaksi Order
 @endsection
@@ -57,7 +59,7 @@
                 </table>
             </div>
             <div class="box-body">
-                    
+
                 <form class="form-produk">
                     @csrf
                     <div class="form-group row">
@@ -81,17 +83,23 @@
                         <th>Kode</th>
                         <th>Nama</th>
                         <th>Harga</th>
-                        <th width="15%">Jumlah</th>
+                        <th width="8%">Jumlah Jual/Hari</th>
+                        <th width="8%">Jumlah Order</th>
                         <th>Subtotal</th>
-                        <th width="15%"><i class="fa fa-cog"></i></th>
+                        <th width="15%"><i class="fa fa-cog"></i>Aksi</th>
                     </thead>
                 </table>
 
                 <div class="row">
                     <div class="col-lg-8">
-                        <button onclick="#" class="btn btn-info btn-flat" type="button"><i class="fa fa-check"></i>Cek Bullwhip Effect</button>
+                        <form action="{{ route('order_detail.beUpdate', ['id'=>1]) }}" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Check Bullwhip Effect</button>
+                        </form>
+
                         <div class="tampil-bayar bg-primary"></div>
                         <div class="tampil-terbilang"></div>
+
                     </div>
                     <div class="col-lg-4">
                         <form action="{{ route('order.store') }}" class="form-order" method="post">
@@ -116,7 +124,7 @@
                             <div class="form-group row">
                                 <label for="bayar" class="col-lg-2 control-label">Bayar</label>
                                 <div class="col-lg-8">
-                                    <input type="text" id="bayarrp" class="form-control">
+                                    <input type="text" id="bayarrp" name="bayar" class="form-control">
                                 </div>
                             </div>
                         </form>
@@ -154,6 +162,7 @@
                 {data: 'kode_produk'},
                 {data: 'nama_produk'},
                 {data: 'harga'},
+                {data: 'jumlah_jual'},
                 {data: 'jumlah'},
                 {data: 'subtotal'},
                 {data: 'aksi', searchable: false, sortable: false},
@@ -167,10 +176,44 @@
         });
         table2 = $('.table-produk').DataTable();
 
+        $(document).on('input', '.jumlah_jual', function () {
+            let id_jual = $(this).data('id_jual');
+            let jumlah_jual = parseInt($(this).val());
+            console.log(jumlah_jual)
+
+            if (jumlah_jual < 1) {
+                $(this).val(1);
+                alert('Jumlah tidak boleh kurang dari 1');
+                return;
+            }
+            if (jumlah_jual > 10000) {
+                $(this).val(10000);
+                alert('Jumlah tidak boleh lebih dari 10000');
+                return;
+            }
+
+            $.post(`{{ url('/order_detail') }}/${id_jual}`, {
+                    '_token': $('[name=csrf-token]').attr('content'),
+                    '_method': 'put',
+                    'jumlah_jual': jumlah_jual,
+
+                })
+                .done(response => {
+                    $(this).on('mouseout', function () {
+                        table.ajax.reload(() => loadForm($('#diskon').val()));
+                    });
+                })
+                .fail(errors => {
+                    alert('Tidak dapat menyimpan data');
+                    return;
+                });
+        });
+
+
         $(document).on('input', '.quantity', function () {
             let id = $(this).data('id');
             let jumlah = parseInt($(this).val());
-
+            console.log(jumlah)
             if (jumlah < 1) {
                 $(this).val(1);
                 alert('Jumlah tidak boleh kurang dari 1');
@@ -185,7 +228,8 @@
             $.post(`{{ url('/order_detail') }}/${id}`, {
                     '_token': $('[name=csrf-token]').attr('content'),
                     '_method': 'put',
-                    'jumlah': jumlah
+                    'jumlah': jumlah,
+
                 })
                 .done(response => {
                     $(this).on('mouseout', function () {
@@ -209,6 +253,26 @@
         $('.btn-simpan').on('click', function () {
             $('.form-order').submit();
         });
+
+        // $('#btnCheckBullwhipEffect').click(function() {
+        //     console.log('fsdf')
+        //     $.ajax({
+        //         url: "{{ route('order_detail.beUpdate') }}",
+        //         contentType: false,
+        //         processData: false,
+        //         type: "POST",
+        //         success: function(data) {
+        //             $('#btnCheckBullwhipEffect').attr('readonly', 'readonly');
+        //             $('#btnCheckBullwhipEffect').html('Proses ...');
+        //             $('#bullwhipEffect').trigger("reset");
+        //             alert(data.message)
+        //             window.location.href = "http://stackoverflow.com";
+        //         },
+        //         error: function(data) {
+        //             alert(data.message)
+        //         }
+        //     });
+        // })
     });
 
     function tampilProduk() {
@@ -271,5 +335,6 @@
                 return;
             })
     }
+
 </script>
 @endpush
