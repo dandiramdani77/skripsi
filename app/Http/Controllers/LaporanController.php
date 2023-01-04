@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pembelian;
-use App\Models\Pengeluaran;
-use App\Models\Penjualan;
-use Illuminate\Http\Request;
 use PDF;
+use App\Models\Order;
+use App\Models\OrderDetail;
+use Illuminate\Http\Request;
 
 class LaporanController extends Controller
 {
@@ -25,51 +24,75 @@ class LaporanController extends Controller
 
     public function getData($awal, $akhir)
     {
-        $no = 1;
-        $data = array();
-        $pendapatan = 0;
-        $total_pendapatan = 0;
-
-        while (strtotime($awal) <= strtotime($akhir)) {
-            $tanggal = $awal;
-            $awal = date('Y-m-d', strtotime("+1 day", strtotime($awal)));
-
-            $total_penjualan = Penjualan::where('created_at', 'LIKE', "%$tanggal%")->sum('bayar');
-            $total_pembelian = Pembelian::where('created_at', 'LIKE', "%$tanggal%")->sum('bayar');
-            $total_pengeluaran = Pengeluaran::where('created_at', 'LIKE', "%$tanggal%")->sum('nominal');
-
-            $pendapatan = $total_penjualan - $total_pembelian - $total_pengeluaran;
-            $total_pendapatan += $pendapatan;
-
-            $row = array();
-            $row['DT_RowIndex'] = $no++;
-            $row['tanggal'] = tanggal_indonesia($tanggal, false);
-            $row['penjualan'] = format_uang($total_penjualan);
-            $row['pembelian'] = format_uang($total_pembelian);
-            $row['pengeluaran'] = format_uang($total_pengeluaran);
-            $row['pendapatan'] = format_uang($pendapatan);
-
-            $data[] = $row;
-        }
-
-        $data[] = [
-            'DT_RowIndex' => '',
-            'tanggal' => '',
-            'penjualan' => '',
-            'pembelian' => '',
-            'pengeluaran' => 'Total Pendapatan',
-            'pendapatan' => format_uang($total_pendapatan),
-        ];
-
-        return $data;
-    }
-
-    public function data($awal, $akhir)
-    {
-        $data = $this->getData($awal, $akhir);
+        $order = Order::where('status_order', 'Approved')->whereBetween('created_at', [$awal, $akhir])->orderBy('id_order', 'desc')->get();
 
         return datatables()
-            ->of($data)
+            ->of($order)
+            ->addIndexColumn()
+            ->addColumn('total_item', function ($order) {
+                return format_uang($order->total_item);
+            })
+            ->addColumn('total_harga', function ($order) {
+                return 'Rp. '. format_uang($order->total_harga);
+            })
+            ->addColumn('bayar', function ($order) {
+                return 'Rp. '. format_uang($order->bayar);
+            })
+            ->addColumn('tanggal', function ($order) {
+                return tanggal_indonesia($order->created_at, false);
+            })
+            ->addColumn('distributor', function ($order) {
+                return $order->distributor->nama;
+            })
+            ->editColumn('diskon', function ($order) {
+                return $order->diskon . '%';
+            })
+            ->editColumn('retailer', function ($order) {
+                return $order->user->name ?? '';
+            })
+            ->addColumn('aksi', function ($order) {
+                return '
+                <div class="btn-group">
+                    <button onclick="showDetail(`'. route('laporan.show', $order->id_order) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i> Lihat </button>
+                </div>
+                ';
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
+
+    // public function data($awal, $akhir)
+    // {
+    //     $data = $this->getData($awal, $akhir);
+
+    //     return datatables()
+    //         ->of($data)
+    //         ->make(true);
+    // }
+
+    public function show($id)
+    {
+        $detail = OrderDetail::with('produk')->where('id_order', $id)->get();
+
+        return datatables()
+            ->of($detail)
+            ->addIndexColumn()
+            ->addColumn('kode_produk', function ($detail) {
+                return '<span class="label label-success">'. $detail->produk->kode_produk .'</span>';
+            })
+            ->addColumn('nama_produk', function ($detail) {
+                return $detail->produk->nama_produk;
+            })
+            ->addColumn('harga', function ($detail) {
+                return 'Rp. '. format_uang($detail->harga);
+            })
+            ->addColumn('jumlah', function ($detail) {
+                return format_uang($detail->jumlah);
+            })
+            ->addColumn('subtotal', function ($detail) {
+                return 'Rp. '. format_uang($detail->subtotal);
+            })
+            ->rawColumns(['kode_produk'])
             ->make(true);
     }
 
@@ -78,7 +101,7 @@ class LaporanController extends Controller
         $data = $this->getData($awal, $akhir);
         $pdf  = PDF::loadView('laporan.pdf', compact('awal', 'akhir', 'data'));
         $pdf->setPaper('a4', 'potrait');
-        
-        return $pdf->stream('Laporan-pendapatan-'. date('Y-m-d-his') .'.pdf');
+
+        return $pdf->stream('Laporan-order-'. date('Y-m-d-his') .'.pdf');
     }
 }

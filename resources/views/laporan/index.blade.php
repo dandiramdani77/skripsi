@@ -26,12 +26,14 @@
                     <thead>
                         <th width="5%">No</th>
                         <th>Tanggal</th>
+                        <th>Distributor</th>
                         <th>Retailer</th>
-                        <th>Kode Produk</th>
-                        <th>Nama Produk</th>
-                        <th>Harga</th>
-                        <th>Jumlah</th>
-                        <th>Sub Total</th>
+                        <th>Total Item</th>
+                        <th>Total Harga</th>
+                        <th>Diskon</th>
+                        <th>Total Bayar</th>
+                        <th>Status</th>
+                        <th width="15%"><i class="fa fa-cog"></i>Aksi</th>
                     </thead>
                 </table>
             </div>
@@ -39,13 +41,15 @@
     </div>
 </div>
 
+@includeIf('order.detail')
 @includeIf('laporan.form')
+
 @endsection
 
 @push('scripts')
 <script src="{{ asset('/AdminLTE-2/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
 <script>
-    let table;
+    let table, table1;
 
     $(function () {
         table = $('.table').DataTable({
@@ -59,17 +63,34 @@
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'tanggal'},
+                {data: 'distributor'},
                 {data: 'retailer'},
-                {data: 'kode_produk'},
-                {data: 'nama_produk'},
-                {data: 'harga'}
-                {data: 'jumlah'}
-                {data: 'subtotal'}
+                {data: 'total_item'},
+                {data: 'total_harga'},
+                {data: 'diskon'},
+                {data: 'bayar'},
+                {data: 'status_order'},
+                {data: 'aksi', searchable: false, sortable: false},
+
             ],
             dom: 'Brt',
             bSort: false,
             bPaginate: false,
         });
+        table.destroy();
+        table1 = $('.table-detail').DataTable({
+            processing: true,
+            bSort: false,
+            dom: 'Brt',
+            columns: [
+                {data: 'DT_RowIndex', searchable: false, sortable: false},
+                {data: 'kode_produk'},
+                {data: 'nama_produk'},
+                {data: 'harga'},
+                {data: 'jumlah'},
+                {data: 'subtotal'},
+            ]
+        })
 
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd',
@@ -79,6 +100,13 @@
 
     function updatePeriode() {
         $('#modal-form').modal('show');
+    }
+
+    function showDetail(url) {
+        $('#modal-detail').modal('show');
+
+        table1.ajax.url(url);
+        table1.ajax.reload();
     }
 </script>
 @endpush

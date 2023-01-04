@@ -214,6 +214,7 @@
             let id = $(this).data('id');
             let jumlah = parseInt($(this).val());
             console.log(jumlah)
+
             // if (jumlah < 1) {
             //     $(this).val(1);
             //     alert('Jumlah tidak boleh kurang dari 1');
