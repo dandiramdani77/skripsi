@@ -181,16 +181,16 @@
             let jumlah_jual = parseInt($(this).val());
             console.log(jumlah_jual)
 
-            if (jumlah_jual < 1) {
-                $(this).val(1);
-                alert('Jumlah tidak boleh kurang dari 1');
-                return;
-            }
-            if (jumlah_jual > 10000) {
-                $(this).val(10000);
-                alert('Jumlah tidak boleh lebih dari 10000');
-                return;
-            }
+            // if (jumlah_jual < 1) {
+            //     $(this).val(1);
+            //     alert('Jumlah tidak boleh kurang dari 1');
+            //     return;
+            // }
+            // if (jumlah_jual > 10000) {
+            //     $(this).val(10000);
+            //     alert('Jumlah tidak boleh lebih dari 10000');
+            //     return;
+            // }
 
             $.post(`{{ url('/order_detail') }}/${id_jual}`, {
                     '_token': $('[name=csrf-token]').attr('content'),
@@ -214,16 +214,16 @@
             let id = $(this).data('id');
             let jumlah = parseInt($(this).val());
             console.log(jumlah)
-            if (jumlah < 1) {
-                $(this).val(1);
-                alert('Jumlah tidak boleh kurang dari 1');
-                return;
-            }
-            if (jumlah > 10000) {
-                $(this).val(10000);
-                alert('Jumlah tidak boleh lebih dari 10000');
-                return;
-            }
+            // if (jumlah < 1) {
+            //     $(this).val(1);
+            //     alert('Jumlah tidak boleh kurang dari 1');
+            //     return;
+            // }
+            // if (jumlah > 10000) {
+            //     $(this).val(10000);
+            //     alert('Jumlah tidak boleh lebih dari 10000');
+            //     return;
+            // }
 
             $.post(`{{ url('/order_detail') }}/${id}`, {
                     '_token': $('[name=csrf-token]').attr('content'),
