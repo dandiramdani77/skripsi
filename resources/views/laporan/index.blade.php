@@ -26,12 +26,14 @@
                     <thead>
                         <th width="5%">No</th>
                         <th>Tanggal</th>
+                        <th>Distributor</th>
                         <th>Retailer</th>
-                        <th>Kode Produk</th>
-                        <th>Nama Produk</th>
-                        <th>Harga</th>
-                        <th>Jumlah</th>
-                        <th>Sub Total</th>
+                        <th>Total Item</th>
+                        <th>Total Harga</th>
+                        <th>Diskon</th>
+                        <th>Total Bayar</th>
+                        <th>Status</th>
+                        <th width="15%"><i class="fa fa-cog"></i>Aksi</th>
                     </thead>
                 </table>
             </div>
@@ -59,12 +61,16 @@
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'tanggal'},
+                {data: 'distributor'},
                 {data: 'retailer'},
-                {data: 'kode_produk'},
-                {data: 'nama_produk'},
-                {data: 'harga'}
-                {data: 'jumlah'}
-                {data: 'subtotal'}
+                {data: 'total_item'},
+                {data: 'total_harga'},
+                {data: 'diskon'},
+                {data: 'bayar'},
+                {data: 'status_order'},
+
+                {data: 'aksi', searchable: false, sortable: false},
+
             ],
             dom: 'Brt',
             bSort: false,

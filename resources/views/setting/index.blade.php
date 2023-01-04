@@ -68,7 +68,7 @@
                             <span class="help-block with-errors"></span>
                         </div>
                     </div> --}}
-                    <div class="form-group row">
+                    {{-- <div class="form-group row">
                         <label for="tipe_nota" class="col-lg-2 control-label">Tipe Nota</label>
                         <div class="col-lg-2">
                             <select name="tipe_nota" class="form-control" id="tipe_nota" required>
@@ -77,7 +77,7 @@
                             </select>
                             <span class="help-block with-errors"></span>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="box-footer text-right">
                     <button class="btn btn-sm btn-flat btn-primary"><i class="fa fa-save"></i> Simpan Perubahan</button>

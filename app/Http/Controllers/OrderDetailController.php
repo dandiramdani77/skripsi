@@ -162,47 +162,5 @@ class OrderDetailController extends Controller
         } else {
             return redirect()->route('order.index')->with('pesan_delete', 'Gagal Approved,' . number_format($BE, 2) . ' Bullwhip Effect > 1');
         }
-
-
-
-
-        // {
-        //     if ($item) {
-        //         $total_order = $order_detail->sum('jumlah');
-        //         $total_jual = $order_detail->sum('jumlah_jual');
-        //         $total_product =$order_detail->count();
-        //         $rata_order = $total_order / $total_product;
-        //         $rata_sales = $total_sales / $total_product;
-        //     foreach ($orderdetail as $item) {
-        //         $pengurangan_order = $item->jumlah - $rata_order;
-        //         $kuadrat_order += pow($pengurangan_order, 2);
-        //         $pengurangan_sales = $item->salesdata - $rata_sales;
-        //         $kuadrat_sales += pow($pengurangan_sales, 2);
-        //     }
-        //         $deviation_order = sqrt($kuadrat_order / ($total_product - 1));
-        //         $deviation_sales = sqrt($kuadrat_sales / ($total_product - 1));
-        //         $cv_order = $deviation_order / $rata_order;
-        //         $cv_sales = $deviation_sales / $rata_sales;
-        //         $BE = $cv_order / $cv_sales;
-
-        //         if ($BE < 1.0) {
-        //             alert('Order Approved,' . number_format($BE, 2) . ' Bullwhip Effect < 1');
-        //             return redirect('order.index');
-        //         }else{
-        //             alert('Order Pending,' . number_format($BE, 2) . ' Bullwhip Effect >= 1');
-        //             return redirect('order_detail.index');
-        //         }
-        //     //         Order::where('id_order', $id)->update([
-        //     //             'status_order' => 'Approved'
-        //     //         ]);
-        //     //         return redirect('order')->with('pesan_edit', 'Order Approved,' . number_format($BE, 2) . ' Bullwhip Effect < 1');
-        //     //     } else {
-
-        //     //         return redirect('order')->with('pesan_delete', 'Order Pending,' . number_format($BE, 2) . ' Bullwhip Effect >= 1');
-        //     //     }
-        //     // } else {
-        //     //     return redirect('order')->with('pesan_edit', 'Order Approved');
-        //     }
-        // }
     }
 }
