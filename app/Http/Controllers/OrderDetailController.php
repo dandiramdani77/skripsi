@@ -143,7 +143,7 @@ class OrderDetailController extends Controller
             $kuadrat_jual += pow($pengurangan_jual, 2);
 
             if ($kuadrat_jual == 0 || $kuadrat_order == 0) {
-                return redirect()->route('order.index')->with('pesan_edit', 'Tidak dapat dihitung karena ada pembagian dengan nol atau tidak memiliki data yang cukup.');
+                return redirect()->route('order_detail.index')->with('pesan_edit', 'Tidak dapat dihitung karena ada pembagian dengan nol atau tidak memiliki data yang cukup.');
             }
 
         }
@@ -158,9 +158,9 @@ class OrderDetailController extends Controller
             Order::where('id_order', $id_order->id_order)->update([
                 'status_order' => 'Approved'
             ]);
-            return redirect()->route('order.index')->with('pesan_edit', 'Order Approved,' . number_format($BE, 2) . ' Bullwhip Effect < 1');
+            return redirect()->route('order_detail.index')->with('pesan_edit', 'Order Approved,' . number_format($BE, 2) . ' Bullwhip Effect < 1');
         } else {
-            return redirect()->route('order.index')->with('pesan_delete', 'Gagal Approved,' . number_format($BE, 2) . ' Bullwhip Effect > 1');
+            return redirect()->route('order_detail.index')->with('pesan_delete', 'Gagal Approved,' . number_format($BE, 2) . ' Bullwhip Effect > 1');
         }
     }
 }

@@ -17,10 +17,10 @@ class BuatOrderDetailTable extends Migration
             $table->increments('id_order_detail');
             $table->integer('id_order');
             $table->integer('id_produk');
-            $table->integer('harga');
-            $table->integer('jumlah_jual');
-            $table->integer('jumlah');
-            $table->integer('subtotal');
+            $table->bigInteger('harga');
+            $table->bigInteger('jumlah_jual');
+            $table->bigInteger('jumlah');
+            $table->bigInteger('subtotal');
             $table->timestamps();
         });
     }

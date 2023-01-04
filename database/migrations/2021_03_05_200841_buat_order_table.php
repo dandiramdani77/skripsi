@@ -18,7 +18,7 @@ class BuatOrderTable extends Migration
             $table->integer('id_distributor');
             $table->integer('id_user');
             $table->integer('total_item');
-            $table->integer('total_harga');
+            $table->bigInteger('total_harga');
             $table->tinyInteger('diskon')->default(0);
             $table->integer('bayar')->default(0);
             $table->string('status_order');

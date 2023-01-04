@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use PDF;
 use App\Models\Order;
 use App\Models\OrderDetail;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class LaporanController extends Controller
@@ -20,17 +19,12 @@ class LaporanController extends Controller
             $tanggalAkhir = $request->tanggal_akhir;
         }
 
-
         return view('laporan.index', compact('tanggalAwal', 'tanggalAkhir'));
     }
 
     public function getData($awal, $akhir)
     {
-        $order = Order::where('status_order', 'Approved')
-            ->whereDate('created_at', '>=', $awal)
-            ->whereDate('created_at', '<=', $akhir)
-            ->orderBy('id_order', 'desc')
-            ->get();
+        $order = Order::where('status_order', 'Approved')->whereBetween('created_at', [$awal, $akhir])->orderBy('id_order', 'desc')->get();
 
         return datatables()
             ->of($order)
