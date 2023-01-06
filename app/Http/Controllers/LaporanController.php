@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use PDF;
 use App\Models\Order;
+use PDF;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 
@@ -65,15 +65,6 @@ class LaporanController extends Controller
             ->make(true);
     }
 
-    // public function data($awal, $akhir)
-    // {
-    //     $data = $this->getData($awal, $akhir);
-
-    //     return datatables()
-    //         ->of($data)
-    //         ->make(true);
-    // }
-
     public function show($id)
     {
         $detail = OrderDetail::with('produk')->where('id_order', $id)->get();
@@ -102,10 +93,16 @@ class LaporanController extends Controller
 
     public function exportPDF($awal, $akhir)
     {
-        $data = $this->getData($awal, $akhir);
-        $pdf  = PDF::loadView('laporan.pdf', compact('awal', 'akhir', 'data'));
-        $pdf->setPaper('a4', 'potrait');
+        $data = Order::with('distributor', 'orderdetail.produk')
+            ->where('status_order', 'Approved')
+            ->whereDate('created_at', '>=', $awal)
+            ->whereDate('created_at', '<=', $akhir)
+            ->orderBy('id_order', 'desc')
+            ->get();
 
-        return $pdf->stream('Laporan-order-'. date('Y-m-d-his') .'.pdf');
+        $pdf = PDF::loadView('laporan.pdf', compact('awal', 'akhir', 'data'));
+        $pdf->setPaper('a4', 'potrait');
+        return $pdf->stream();
+
     }
 }

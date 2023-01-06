@@ -45,11 +45,6 @@ class DashboardController extends Controller
             $productQuantity[] = $value->total_quantity;
         }
 
-        // return response()->json($products);
-        // return response()->json($days);
-        // return response()->json($productNames);
-        // return response()->json($productQuantity);
-
         $chartjs = app()->chartjs
             ->name('lineChartTest')
             ->type('line')
