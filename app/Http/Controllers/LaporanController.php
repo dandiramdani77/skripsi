@@ -24,7 +24,11 @@ class LaporanController extends Controller
 
     public function getData($awal, $akhir)
     {
-        $order = Order::where('status_order', 'Approved')->whereBetween('created_at', [$awal, $akhir])->orderBy('id_order', 'desc')->get();
+        $order = Order::where('status_order', 'Approved')
+            ->whereDate('created_at', '>=', $awal)
+            ->whereDate('created_at', '<=', $akhir)
+            ->orderBy('id_order', 'desc')
+            ->get();
 
         return datatables()
             ->of($order)

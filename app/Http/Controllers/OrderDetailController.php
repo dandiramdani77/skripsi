@@ -141,11 +141,10 @@ class OrderDetailController extends Controller
             $pengurangan_jual += $item->jumlah_jual - $rata_jual;
             $kuadrat_order += pow($pengurangan_order, 2);
             $kuadrat_jual += pow($pengurangan_jual, 2);
-
-            if ($kuadrat_jual == 0 || $kuadrat_order == 0) {
-                return redirect()->route('order_detail.index')->with('pesan_edit', 'Tidak dapat dihitung karena ada pembagian dengan nol atau tidak memiliki data yang cukup.');
-            }
-
+        }
+        
+        if ($kuadrat_jual == 0 || $kuadrat_order == 0) {
+            return redirect()->route('order_detail.index')->with('pesan_edit', 'Tidak dapat dihitung karena ada pembagian dengan nol atau tidak memiliki data yang cukup.');
         }
 
         $deviation_order = sqrt($kuadrat_order / ($total_produk - 1));
