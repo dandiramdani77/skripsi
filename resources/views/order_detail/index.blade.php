@@ -147,7 +147,7 @@
     let table, table2;
 
     $(function () {
-        $('body').addClass('sidebar-collapse');
+        $('body').addClass('closed-sidebar');
 
         table = $('.table-order').DataTable({
             responsive: true,

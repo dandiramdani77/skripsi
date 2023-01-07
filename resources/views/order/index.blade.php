@@ -16,12 +16,12 @@
     <div class="col-lg-12">
         <div class="box">
             <div class="box-header with-border">
-                {{-- @if (auth()->user()->level == 2) --}}
+                @if (auth()->user()->level == 2)
                 <button onclick="addForm()" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus-circle"></i> Transaksi Baru</button>
                 @empty(! session('id_order'))
                 <a href="{{ route('order_detail.index') }}" class="btn btn-info btn-xs btn-flat"><i class="fa fa-pencil"></i> Transaksi Aktif</a>
                 @endempty
-                {{-- @endif --}}
+                @endif
             </div>
             <div class="box-body table-responsive">
                 <table class="table table-stiped table-bordered table-order">

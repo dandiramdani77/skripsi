@@ -22,9 +22,10 @@ class BuatOrderTable extends Migration
             $table->tinyInteger('diskon')->default(0);
             $table->integer('bayar')->default(0);
             $table->string('status_order');
+            $table->string('is_ordered')->default(0);
             $table->timestamps();
 
-            
+
         });
     }
 

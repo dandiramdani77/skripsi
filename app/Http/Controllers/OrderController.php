@@ -46,12 +46,44 @@ class OrderController extends Controller
                 return $order->user->name ?? '';
             })
             ->addColumn('aksi', function ($order) {
-                return '
+                $retailer = '
                 <div class="btn-group">
                     <button onclick="showDetail(`'. route('order.show', $order->id_order) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i> Lihat </button>
                     <button onclick="deleteData(`'. route('order.destroy', $order->id_order) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i> Hapus </button>
                 </div>
                 ';
+                $admin = '
+                <div class="btn-group">
+                    <form action="'. route('order.changeStatus', $order->id_order) .'" method="post">
+                        '. csrf_field() .'
+                        <button type="submit" class="btn btn-xs btn-success btn-flat">Approve Order</button>
+                    </form>
+                </div>
+                ';
+                $completeOrder = '
+                <div class="btn-group">
+                    <button class="btn btn-xs btn-success btn-flat"><i class="fa fa-check"></i>Complete</button>
+                </div>
+                ';
+                $cantApproved = '
+                <div class="btn-group">
+                    <button class="btn btn-xs btn-danger btn-flat"><i class="fa fa-times"></i>Masih Pending</button>
+                </div>
+                ';
+
+                if (auth()->user()->level == 2) {
+                    return $retailer;
+                }
+
+                if ($order->is_ordered == 0 && $order->status_order == 'Approved') {
+                    return $admin;
+                }
+
+                if ($order->status_order == 'Pending'){
+                    return $cantApproved;
+                }
+
+                return $completeOrder;
             })
             ->rawColumns(['aksi'])
             ->make(true);
@@ -136,6 +168,15 @@ class OrderController extends Controller
         $order->delete();
 
         return response(null, 204);
+    }
+
+    public function changeStatus($id)
+    {
+        $order = Order::find($id);
+        $order->is_ordered = 1;
+        $order->update();
+
+        return redirect()->route('order.index');
     }
 
 }

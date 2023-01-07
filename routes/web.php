@@ -55,11 +55,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/order/data', [OrderController::class, 'data'])->name('order.data');
         Route::get('/order/{id}/create', [OrderController::class, 'create'])->name('order.create');
+        Route::post('/order/{id}/change', [OrderController::class, 'changeStatus'])->name('order.changeStatus');
 
-        Route::resource('/order', OrderController::class)
-
-
-            ->except('create');
+        Route::resource('/order', OrderController::class)->except('create');
 
         Route::get('/order_detail/{id}/data', [OrderDetailController::class, 'data'])->name('order_detail.data');
         Route::get('/order_detail/loadform/{diskon}/{total}', [OrderDetailController::class, 'loadForm'])->name('order_detail.load_form');
