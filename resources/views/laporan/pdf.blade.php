@@ -71,6 +71,7 @@
                 <th width="5%">No</th>
                 <th>Tanggal</th>
                 <th>Distributor</th>
+                <th>Retailer</th>
                 <th>Total Item</th>
                 <th>Total Harga</th>
                 <th>Diskon</th>
@@ -89,6 +90,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ date('Y-m-d', strtotime($order->created_at)) }}</td>
                         <td>{{ $order->distributor->nama }}</td>
+                        <td>{{ $order->user->name}}</td>
                         <td>{{ $order->total_item }}</td>
                         <td>{{ $order->total_harga }}</td>
                         <td>{{ $order->diskon }}</td>
@@ -96,6 +98,7 @@
                         <td>{{ $order->status_order }}</td>
                     </tr>
                     <tr>
+                        <th></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -107,6 +110,7 @@
                     </tr>
                     @foreach ($order->orderdetail as $row)
                         <tr>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
