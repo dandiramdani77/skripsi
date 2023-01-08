@@ -18,7 +18,7 @@
                 <h1>Selamat Datang</h1>
                 <h2>Anda login sebagai Retailer</h2>
                 <br><br>
-                <a href="#" class="btn btn-success btn-lg">Order Baru</a>
+                <a href="{{ route('order.index') }}" class="btn btn-success btn-lg">Order Baru</a>
                 <br><br><br>
             </div>
         </div>

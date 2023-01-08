@@ -21,17 +21,13 @@
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
-
-            @if (auth()->user()->level == 1)
-            {{-- <li class="header">PERHITUNGAN BULLWHIP EFFECT</li>
             <li>
                 <a href="#">
-                    <i class="fa fa-calculator"></i> <span>Perhitungan Biasa</span>
+                    <i class="fa fa-calculator"></i> <span>Perhitungan Bullwhip Effect</span>
                 </a>
-                <a href="#">
-                    <i class="fa fa-area-chart"></i> <span>Perhitungan Peramalan</span>
-                </a>
-            </li> --}}
+            </li>
+
+            @if (auth()->user()->level == 1)
             <li class="header">MASTER</li>
             <li>
                 <a href="{{ route('kategori.index') }}">
@@ -49,7 +45,7 @@
                     <i class="fa fa-truck"></i> <span>Distributor</span>
                 </a>
             </li>
-            <li class="header">ANALIS BULLWHIP EFFECT</li>
+            <li class="header">PENERAPAN BULLWHIP EFFECT</li>
             
             <li>
                 <a href="{{ route('order.index') }}">
