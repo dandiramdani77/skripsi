@@ -123,8 +123,8 @@ class OrderDetailController extends Controller
     public function beUpdate()
     {
         $id_order = OrderDetail::orderBy('id_order_detail', 'DESC')->first();
-
         $order_detail = OrderDetail::where('id_order', $id_order->id_order)->get();
+
         $kuadrat_order = 0;
         $kuadrat_jual = 0;
         $pengurangan_order = 0;
@@ -137,23 +137,54 @@ class OrderDetailController extends Controller
         $rata_jual = $total_jual / $total_produk;
 
         foreach ($order_detail as $item) {
+            $hasilPenguranganOrder[] = $item->jumlah - $rata_order;
+            $hasilPenguranganJual[] = $item->jumlah_jual - $rata_jual;
             $pengurangan_order += $item->jumlah - $rata_order;
             $pengurangan_jual += $item->jumlah_jual - $rata_jual;
+            $simulasiHasilKuadrat[] = pow($pengurangan_order, 2);
             $kuadrat_order += pow($pengurangan_order, 2);
             $kuadrat_jual += pow($pengurangan_jual, 2);
         }
-        
+
+        foreach ($hasilPenguranganOrder as $hasilPengurangan) {
+            $hasilAkar2[] = pow($hasilPengurangan, 2);
+        }
+
+        foreach ($hasilPenguranganJual as $hasilPengurangan) {
+            $hasilJual[] = pow($hasilPengurangan, 2);
+        }
         if ($kuadrat_jual == 0 || $kuadrat_order == 0) {
             return redirect()->route('order_detail.index')->with('pesan_edit', 'Tidak dapat dihitung karena ada pembagian dengan nol atau tidak memiliki data yang cukup.');
         }
 
-        $deviation_order = sqrt($kuadrat_order / ($total_produk - 1));
-        $deviation_jual = sqrt($kuadrat_jual / ($total_produk - 1));
+        $hasilOrder = array_sum($hasilAkar2);
+        $hasilJual = array_sum($hasilJual);
+
+        $deviation_order = sqrt($hasilOrder / ($total_produk - 1));
+        $deviation_jual = sqrt($hasilJual / ($total_produk - 1));
         $cv_order = $deviation_order / $rata_order;
         $cv_jual = $deviation_jual / $rata_jual;
         $BE = $cv_order / $cv_jual;
 
-        if ($BE <= 1.0) {
+        // return response()->json([
+        //     'totalProduk' => $total_produk,
+        //     'total_jual' => $total_jual,
+        //     'total_order' => $total_order,
+        //     'rata_jual' => $rata_jual,
+        //     'rata_order' => $rata_order,
+        //     'hasilSemuaPengurangan' => $hasilPenguranganOrder,
+        //     'hasilAkar2' => $hasilAkar2,
+        //     'hasilOrderSetelahDijumlahkan' => $hasilOrder,
+        //     'hasilJualSetelahDijumlahkan' => $hasilJual,
+        //     'deviationOrder' => $deviation_order,
+        //     'deviationJual' => $deviation_jual,
+        //     'cvOrder' => $cv_order,
+        //     'cvJual' => $cv_jual,
+        //     'BE' => $BE,
+        // ]);
+
+
+        if ($BE < 1.0000) {
             Order::where('id_order', $id_order->id_order)->update([
                 'status_order' => 'Approved'
             ]);
