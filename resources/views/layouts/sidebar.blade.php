@@ -21,14 +21,21 @@
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <i class="fa fa-calculator"></i> <span>Perhitungan Bullwhip Effect</span>
-                </a>
-            </li>
 
             @if (auth()->user()->level == 1)
+            <li class="header">PERHITUNGAN BULLWHIP EFFECT</li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-calculator"></i> <span>Sebelum Peramalan</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa fa-area-chart"></i> <span>Setelah Peramalan</span>
+                </a>
+            </li>
             <li class="header">MASTER</li>
+
             <li>
                 <a href="{{ route('kategori.index') }}">
                     <i class="fa fa-cube"></i> <span>Kategori</span>
