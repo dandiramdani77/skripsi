@@ -12,7 +12,7 @@
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
-        
+
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
@@ -25,7 +25,7 @@
             @if (auth()->user()->level == 1)
             <li class="header">PERHITUNGAN BULLWHIP EFFECT</li>
             <li>
-                <a href="#">
+                <a href="{{ route('bullwhipeffect.index', []) }}">
                     <i class="fa fa-calculator"></i> <span>Sebelum Peramalan</span>
                 </a>
             </li>
@@ -46,14 +46,14 @@
                     <i class="fa fa-cubes"></i> <span>Produk</span>
                 </a>
             </li>
-            
+
             <li>
                 <a href="{{ route('distributor.index') }}">
                     <i class="fa fa-truck"></i> <span>Distributor</span>
                 </a>
             </li>
             <li class="header">PENERAPAN BULLWHIP EFFECT</li>
-            
+
             <li>
                 <a href="{{ route('order.index') }}">
                     <i class="fa fa-download"></i> <span>Order Produk</span>

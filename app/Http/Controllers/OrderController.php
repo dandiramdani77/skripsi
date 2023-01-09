@@ -12,9 +12,9 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $distributor = Distributor::orderBy('nama')->get();
+            $distributor = Distributor::orderBy('nama')->get();
 
-        return view('order.index', compact('distributor'));
+            return view('order.index', compact('distributor'));
     }
 
     public function data()

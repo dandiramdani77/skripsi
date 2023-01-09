@@ -1,11 +1,12 @@
 <?php
 
 use App\Http\Controllers\{
+    BullwhipEffectController,
+    BullwhipEffectDetailController,
     DashboardController,
     KategoriController,
     LaporanController,
     ProdukController,
-    // PengeluaranController,
     OrderController,
     OrderDetailController,
     PenjualanController,
@@ -15,17 +16,6 @@ use App\Http\Controllers\{
     UserController,
 };
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -69,6 +59,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/penjualan', [PenjualanController::class, 'index'])->name('penjualan.index');
         Route::get('/penjualan/{id}', [PenjualanController::class, 'show'])->name('penjualan.show');
         Route::delete('/penjualan/{id}', [PenjualanController::class, 'destroy'])->name('penjualan.destroy');
+
+        Route::resource('/bullwhipeffect', BullwhipEffectController::class);
+        // Route::get('/bullwhipeffect', [BullwhipEffectController::class, 'index'])->name('bullwhipeffect.index');
+
+        Route::get('/bullwhipeffect_details/{id}/data', [BullwhipEffectDetailController::class, 'data'])->name('bullwhipeffect_details.data');
+        Route::get('/bullwhipeffect_details/loadform/{diskon}/{total}', [BullwhipEffectDetailController::class, 'loadForm'])->name('bullwhipeffect_details.load_form');
+        Route::post('/bullwhipeffect_details/beUpdate', [BullwhipEffectDetailController::class, 'beUpdate'])->name('bullwhipeffect_details.beUpdate');
+        Route::resource('/bullwhipeffect_details', BullwhipEffectDetailController::class)
+            ->except('create', 'show', 'edit');
     });
 
     Route::group(['middleware' => 'level:1,2'], function () {
