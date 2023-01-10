@@ -27,12 +27,9 @@
                 <table class="table table-stiped table-bordered table-order">
                     <thead>
                         <th width="5%">No</th>
-                        <th>Tanggal</th>
-                        <th>Retailer</th>
-                        {{-- <th>Total Item</th> --}}
-                        <th>Status</th>
-                        <th>BullWhip Effect</th>
-                        <th width="15%"><i class="fa fa-cog"></i>Aksi</th>
+                        <th>Nama Kategori</th>
+                        {{-- <th>Jumlah Jual</th> --}}
+                        {{-- <th>BullWhip Effect</th> --}}
                     </thead>
                 </table>
             </div>
@@ -53,10 +50,9 @@
                     <thead>
                         <th width="5%">No</th>
                         <th>Periode</th>
-                        <th>Kode</th>
                         <th>Nama</th>
                         <th>Jumlah Jual</th>
-                        <th>Jumlah</th>
+                        {{-- <th>Jumlah</th> --}}
                     </thead>
                 </table>
             </div>
@@ -81,16 +77,31 @@
             ajax: {
                 url: '{{ route('bullwhipeffect.index') }}',
             },
+            createdRow: function( row, data, dataIndex ) {
+                $( row ).find('td:eq(0)')
+                    .attr('rowspan', 2);
+                $( row ).find('td:eq(1)')
+                    .attr('rowspan', 2);
+            },
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
-                {data: 'tanggal'},
-                {data: 'user.name'},
-                // {data: 'total_item'},
-                {data: 'status_order'},
-                {data: 'bullwhip_effect'},
-                {data: 'aksi', searchable: false, sortable: false},
+                {data: 'nama_kategori'},
+                {data: 'periode'},
+                // {data: 'bullwhip_effect'},
             ]
         });
+
+        // table.on('draw', function() {
+        //     var rows = table.rows().nodes();
+        //     var last = null;
+
+        //     table.column(1).data().each(function(group, i) {
+        //         if (last !== group) {
+        //             $(rows).eq(i).before('<tr class="group"><td rowspan="3">' + group + '</td></tr>');
+        //             last = group;
+        //         }
+        //     });
+        // });
 
         table1 = $('.table-detail').DataTable({
             processing: true,
@@ -99,8 +110,7 @@
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'periode'},
-                {data: 'kode_produk'},
-                {data: 'produk.nama_produk'},
+                {data: 'kategori.nama_kategori'},
                 {data: 'jumlah_jual'},
                 {data: 'jumlah'},
             ]

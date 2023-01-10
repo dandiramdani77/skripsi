@@ -12,4 +12,9 @@ class Kategori extends Model
     protected $table = 'kategori';
     protected $primaryKey = 'id_kategori';
     protected $guarded = [];
+
+    public function bullwhipeffect()
+    {
+        return $this->hasMany(BullwhipEffectDetail::class, 'id_kategori');
+    }
 }

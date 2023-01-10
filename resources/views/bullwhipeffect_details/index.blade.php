@@ -51,7 +51,7 @@
                         <div class="col-lg-5">
                             <div class="input-group">
                                 <input type="hidden" name="bullwhip_effect_id" id="bullwhip_effect_id" value="{{ $id_order }}">
-                                <input type="hidden" name="id_produk" id="id_produk">
+                                <input type="hidden" name="id_kategori" id="id_kategori">
                                 <input type="text" class="form-control" name="kode_produk" id="kode_produk">
                                 <span class="input-group-btn">
                                     <button onclick="tampilProduk()" class="btn btn-info btn-flat" type="button"><i class="fa fa-arrow-right"></i></button>
@@ -100,7 +100,42 @@
     </div>
 </div>
 
-@includeIf('order_detail.produk')
+<div class="modal fade" id="modal-produk" tabindex="-1" role="dialog" aria-labelledby="modal-produk">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Pilih Produk</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-bordered table-produk">
+                    <thead>
+                        <th width="5%">No</th>
+                        <th>Nama</th>
+                        <th><i class="fa fa-cog"></i></th>
+                    </thead>
+                    <tbody>
+                        @foreach ($produk as $key => $item)
+                            <tr>
+                                <td width="5%">{{ $key+1 }}</td>
+                                <td>{{ $item->nama_kategori }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-primary btn-xs btn-flat"
+                                        onclick="pilihProduk('{{ $item->id_kategori }}')">
+                                        <i class="fa fa-check-circle"></i>
+                                        Pilih
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('scripts')
@@ -120,8 +155,7 @@
             },
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
-                {data: 'kode_produk'},
-                {data: 'nama_produk'},
+                {data: 'nama_kategori'},
                 {data: 'periode'},
                 {data: 'jumlah_jual'},
                 {data: 'jumlah'},
@@ -213,9 +247,8 @@
         $('#modal-produk').modal('hide');
     }
 
-    function pilihProduk(id, kode) {
-        $('#id_produk').val(id);
-        $('#kode_produk').val(kode);
+    function pilihProduk(id) {
+        $('#id_kategori').val(id);
         hideProduk();
         tambahProduk();
     }
@@ -223,7 +256,7 @@
     function tambahProduk() {
         $.post('{{ route('bullwhipeffect_details.store') }}', $('.form-produk').serialize())
             .done(response => {
-                $('#kode_produk').focus();
+                console.log(response)
                 table.ajax.reload();
             })
             .fail(errors => {

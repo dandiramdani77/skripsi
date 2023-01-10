@@ -9,9 +9,9 @@ class BullwhipEffectDetail extends Model
 {
     use HasFactory;
 
-    public function produk()
+    public function kategori()
     {
-        return $this->belongsTo(Produk::class, 'id_produk');
+        return $this->belongsTo(Kategori::class, 'id_kategori');
     }
 
     public function bullwhip_effect()

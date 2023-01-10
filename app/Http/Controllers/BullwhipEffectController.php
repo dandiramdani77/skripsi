@@ -2,40 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\BullwhipEffect;
 use App\Models\BullwhipEffectDetail;
+use App\Models\Kategori;
 
 class BullwhipEffectController extends Controller
 {
     public function index()
     {
-        $order = BullwhipEffect::with('user')->orderBy('id', 'desc')->get();
-
+        $order = Kategori::with('bullwhipeffect')->orderBy('created_at', 'desc')->get();
+        // return response()->json($order);
         if (request()->ajax()) {
             return datatables()
             ->of($order)
             ->addIndexColumn()
-            ->addColumn('total_item', function ($order) {
-                return format_uang($order->total_item);
+            ->editColumn('nama_kategori', function ($row) {
+                return '<td rowspan="' . $row->bullwhipeffect->count() . '">' . $row->nama_kategori . '</td>';
             })
-            ->addColumn('tanggal', function ($order) {
-                return tanggal_indonesia($order->created_at, false);
-            })
-            ->editColumn('retailer', function ($order) {
-                return $order->user->name ?? '';
-            })
-            ->addColumn('aksi', function ($order) {
-                $btn = '
-                <div class="btn-group">
-                    <button onclick="showDetail(`'. route('bullwhipeffect.show', $order->id) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i> Lihat </button>
-                    <button onclick="deleteData(`'. route('bullwhipeffect.destroy', $order->id) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i> Hapus </button>
-                </div>
-                ';
-                return $btn;
-            })
-            ->rawColumns(['aksi'])
+            // ->rawColumns(['nama_kategori'])
+            ->rawColumns(['nama_kategori'])
             ->make(true);
         }
 
@@ -66,21 +52,17 @@ class BullwhipEffectController extends Controller
 
     public function show($id)
     {
-        $detail = BullwhipEffectDetail::with('produk')->where('bullwhip_effect_id', $id)->get();
+        $detail = BullwhipEffectDetail::with('kategori')->where('bullwhip_effect_id', $id)->get();
 
         return datatables()
             ->of($detail)
             ->addIndexColumn()
-            ->addColumn('kode_produk', function ($detail) {
-                return '<span class="label label-success">'. $detail->produk->kode_produk .'</span>';
-            })
             ->addColumn('jumlah', function ($detail) {
                 return format_uang($detail->jumlah);
             })
             ->addColumn('jumlah_jual', function ($detail) {
                 return format_uang($detail->jumlah_jual);
             })
-            ->rawColumns(['kode_produk'])
             ->make(true);
     }
 

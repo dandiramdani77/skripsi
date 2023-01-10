@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BullwhipEffect;
 use App\Models\BullwhipEffectDetail;
-use App\Models\Produk;
+use App\Models\Kategori;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -13,14 +13,14 @@ class BullwhipEffectDetailController extends Controller
     public function index()
     {
         $id_order = session('id');
-        $produk = Produk::orderBy('nama_produk')->get();
+        $produk = Kategori::orderBy('nama_kategori')->get();
 
         return view('bullwhipeffect_details.index', compact('id_order', 'produk'));
     }
 
     public function data($id)
     {
-        $detail = BullwhipEffectDetail::with('produk')
+        $detail = BullwhipEffectDetail::with('kategori')
             ->where('bullwhip_effect_id', $id)
             ->get();
         $data = array();
@@ -29,8 +29,7 @@ class BullwhipEffectDetailController extends Controller
 
         foreach ($detail as $item) {
             $row = array();
-            $row['kode_produk'] = '<span class="label label-success">'. $item->produk['kode_produk'] .'</span';
-            $row['nama_produk'] = $item->produk['nama_produk'];
+            $row['nama_kategori'] = $item->kategori['nama_kategori'];
             $row['periode'] = '<input type="date" class="form-control input-sm periode" data-id="'. $item->id .'" value="'. $item->periode .'">';
             $row['jumlah_jual'] = '<input type="number" class="form-control input-sm jumlah_jual" data-id_jual="'. $item->id .'" value="'. $item->jumlah_jual .'">';
             $row['jumlah']      = '<input type="number" class="form-control input-sm quantity" data-id="'. $item->id .'" value="'. $item->jumlah .'">';
@@ -46,32 +45,30 @@ class BullwhipEffectDetailController extends Controller
             'kode_produk' => '
                 <div class="total hide">'. $total .'</div>
                 <div class="total_item hide">'. $total_item .'</div>',
-            'nama_produk' => '',
-            'harga'       => '',
+            'nama_kategori' => '',
             'periode' => '',
             'jumlah_jual' => '',
             'jumlah'      => '',
-            'subtotal'    => '',
             'aksi'        => '',
         ];
 
         return datatables()
             ->of($data)
             ->addIndexColumn()
-            ->rawColumns(['aksi', 'kode_produk','jumlah_jual','jumlah', 'periode'])
+            ->rawColumns(['aksi', 'kode_produk', 'nama_kategori', 'jumlah_jual','jumlah', 'periode'])
             ->make(true);
     }
 
     public function store(Request $request)
     {
-        $produk = Produk::where('id_produk', $request->id_produk)->first();
+        $produk = Kategori::where('id_kategori', $request->id_kategori)->first();
         if (! $produk) {
             return response()->json('Data gagal disimpan', 400);
         }
 
         $detail = new BullwhipEffectDetail();
         $detail->bullwhip_effect_id = $request->bullwhip_effect_id;
-        $detail->id_produk = $produk->id_produk;
+        $detail->id_kategori = $produk->id_kategori;
         $detail->periode = Carbon::now()->format('Y-m-d');
         $detail->jumlah_jual = 1;
         $detail->jumlah = 1;

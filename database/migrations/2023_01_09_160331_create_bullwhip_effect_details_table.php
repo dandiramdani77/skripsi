@@ -17,7 +17,7 @@ class CreateBullwhipEffectDetailsTable extends Migration
             $table->bigIncrements('id');
             $table->date('periode');
             $table->unsignedBigInteger('bullwhip_effect_id');
-            $table->integer('id_produk');
+            $table->integer('id_kategori');
             $table->bigInteger('jumlah_jual');
             $table->bigInteger('jumlah');
             $table->timestamps();
