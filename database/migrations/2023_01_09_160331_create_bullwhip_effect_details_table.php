@@ -15,6 +15,7 @@ class CreateBullwhipEffectDetailsTable extends Migration
     {
         Schema::create('bullwhip_effect_details', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->date('periode');
             $table->unsignedBigInteger('bullwhip_effect_id');
             $table->integer('id_produk');
             $table->bigInteger('jumlah_jual');

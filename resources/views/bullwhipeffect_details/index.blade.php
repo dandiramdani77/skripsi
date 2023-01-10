@@ -66,6 +66,7 @@
                         <th width="5%">Periode</th>
                         <th>Kode</th>
                         <th>Nama</th>
+                        <th>Periode</th>
                         <th width="8%">Jumlah Jual/Hari</th>
                         <th width="8%">Jumlah Order</th>
                         <th width="15%"><i class="fa fa-cog"></i>Aksi</th>
@@ -77,6 +78,15 @@
                         <form action="{{ route('bullwhipeffect_details.beUpdate') }}" method="post">
                             @csrf
                             <button type="submit" class="btn btn-primary">Check Bullwhip Effect</button>
+                        </form>
+                    </div>
+                    <div class="col-lg-4">
+                        <form action="{{ route('bullwhipeffect.store') }}" class="form-order" method="post">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $id_order }}">
+                            <input type="hidden" name="total" id="total">
+                            <input type="hidden" name="total_item" id="total_item">
+                            <input type="hidden" name="bayar" id="bayar">
                         </form>
                     </div>
 
@@ -112,6 +122,7 @@
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'kode_produk'},
                 {data: 'nama_produk'},
+                {data: 'periode'},
                 {data: 'jumlah_jual'},
                 {data: 'jumlah'},
                 {data: 'aksi', searchable: false, sortable: false},
@@ -153,6 +164,27 @@
                     '_token': $('[name=csrf-token]').attr('content'),
                     '_method': 'put',
                     'jumlah': jumlah,
+
+                })
+                .done(response => {
+                    $(this).on('mouseout', function () {
+                        table.ajax.reload();
+                    });
+                })
+                .fail(errors => {
+                    alert('Tidak dapat menyimpan data');
+                    return;
+                });
+        });
+
+        $(document).on('input', '.periode', function () {
+            let id = $(this).data('id');
+            let date = $(this).val();
+
+            $.post(`{{ url('/bullwhipeffect_details') }}/${id}`, {
+                    '_token': $('[name=csrf-token]').attr('content'),
+                    '_method': 'put',
+                    'periode': date,
 
                 })
                 .done(response => {

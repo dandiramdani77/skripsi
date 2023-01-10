@@ -29,15 +29,41 @@
                         <th width="5%">No</th>
                         <th>Tanggal</th>
                         <th>Retailer</th>
-                        <th>Total Item</th>
+                        {{-- <th>Total Item</th> --}}
                         <th>Status</th>
                         <th>BullWhip Effect</th>
+                        <th width="15%"><i class="fa fa-cog"></i>Aksi</th>
                     </thead>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-detail" tabindex="-1" role="dialog" aria-labelledby="modal-detail">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Detail Order</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-bordered table-detail">
+                    <thead>
+                        <th width="5%">No</th>
+                        <th>Periode</th>
+                        <th>Kode</th>
+                        <th>Nama</th>
+                        <th>Jumlah Jual</th>
+                        <th>Jumlah</th>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @endsection
 
@@ -59,11 +85,26 @@
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
                 {data: 'tanggal'},
                 {data: 'user.name'},
-                {data: 'total_item'},
+                // {data: 'total_item'},
                 {data: 'status_order'},
                 {data: 'bullwhip_effect'},
+                {data: 'aksi', searchable: false, sortable: false},
             ]
         });
+
+        table1 = $('.table-detail').DataTable({
+            processing: true,
+            bSort: false,
+            dom: 'Brt',
+            columns: [
+                {data: 'DT_RowIndex', searchable: false, sortable: false},
+                {data: 'periode'},
+                {data: 'kode_produk'},
+                {data: 'produk.nama_produk'},
+                {data: 'jumlah_jual'},
+                {data: 'jumlah'},
+            ]
+        })
     });
 
     function showDetail(url) {

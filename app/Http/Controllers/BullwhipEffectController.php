@@ -26,6 +26,16 @@ class BullwhipEffectController extends Controller
             ->editColumn('retailer', function ($order) {
                 return $order->user->name ?? '';
             })
+            ->addColumn('aksi', function ($order) {
+                $btn = '
+                <div class="btn-group">
+                    <button onclick="showDetail(`'. route('bullwhipeffect.show', $order->id) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i> Lihat </button>
+                    <button onclick="deleteData(`'. route('bullwhipeffect.destroy', $order->id) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i> Hapus </button>
+                </div>
+                ';
+                return $btn;
+            })
+            ->rawColumns(['aksi'])
             ->make(true);
         }
 
@@ -51,7 +61,7 @@ class BullwhipEffectController extends Controller
         $bullwhipEffect = BullwhipEffect::findOrFail($request->id);
         $bullwhipEffect->update();
 
-        return redirect()->route('order.index');
+        return redirect()->route('bullwhipeffect.index');
     }
 
     public function show($id)
@@ -67,34 +77,23 @@ class BullwhipEffectController extends Controller
             ->addColumn('jumlah', function ($detail) {
                 return format_uang($detail->jumlah);
             })
+            ->addColumn('jumlah_jual', function ($detail) {
+                return format_uang($detail->jumlah_jual);
+            })
             ->rawColumns(['kode_produk'])
             ->make(true);
     }
 
     public function destroy($id)
     {
-        // $order = BullwhipEffect::find($id);
-        // $detail    = BullwhipEffectDetail::where('id_order', $order->id_order)->get();
-        // foreach ($detail as $item) {
-        //     $produk = Produk::find($item->id_produk);
-        //     if ($produk) {
-        //         $produk->stok += $item->jumlah;
-        //         $produk->update();
-        //     }
-        //     $item->delete();
-        // }
+        $order = BullwhipEffect::find($id);
+        $detail    = BullwhipEffectDetail::where('bullwhip_effect_id', $order->id)->get();
+        foreach ($detail as $item) {
+            $item->delete();
+        }
 
-        // $order->delete();
+        $order->delete();
 
-        // return response(null, 204);
-    }
-
-    public function changeStatus($id)
-    {
-        $order = Order::find($id);
-        $order->is_ordered = 1;
-        $order->update();
-
-        return redirect()->route('order.index');
+        return response(null, 204);
     }
 }
