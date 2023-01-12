@@ -66,7 +66,7 @@
                         <th width="5%">No</th>
                         <th>Kategori</th>
                         <th>Tanggal</th>
-                        
+
                         <th width="8%">Jumlah Jual/Hari</th>
                         <th width="8%">Jumlah Order</th>
                         <th width="15%"><i class="fa fa-cog"></i>Aksi</th>
@@ -256,7 +256,6 @@
     function tambahKategori() {
         $.post('{{ route('bullwhipeffect_details.store') }}', $('.form-kategori').serialize())
             .done(response => {
-                console.log(response)
                 table.ajax.reload();
             })
             .fail(errors => {

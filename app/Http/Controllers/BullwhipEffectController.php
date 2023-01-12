@@ -5,29 +5,36 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\BullwhipEffect;
 use App\Models\BullwhipEffectDetail;
-use App\Models\Kategori;
 
 class BullwhipEffectController extends Controller
 {
     public function index()
     {
-        $be= Kategori::with('bullwhipeffect')->orderBy('created_at', 'desc')->get();
-        // return response()->json($order);
+        $bullwhipEffect = BullwhipEffect::orderBy('created_at', 'desc')->get();
+
         if (request()->ajax()) {
             return datatables()
-            ->of($be)
+            ->of($bullwhipEffect)
             ->addIndexColumn()
-            ->editColumn('nama_kategori', function ($row) {
-                return '<td rowspan="' . $row->bullwhipeffect->count() . '">' . $row->nama_kategori . '</td>';
+            ->addColumn('created_at', function ($bullwhipEffect) {
+                return tanggal_indonesia($bullwhipEffect->created_at, false);
             })
-            // ->rawColumns(['nama_kategori'])
-            ->rawColumns(['nama_kategori'])
+            ->addColumn('aksi', function ($bullwhipEffect) {
+                $btn = '
+                <div class="btn-group">
+                    <button onclick="showDetail(`'. route('bullwhipeffect.show', $bullwhipEffect->id) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i> Lihat </button>
+                    <button onclick="deleteData(`'. route('bullwhipeffect.destroy', $bullwhipEffect->id) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i> Hapus </button>
+                </div>
+                ';
+
+                return $btn;
+            })
+            ->rawColumns(['aksi'])
             ->make(true);
         }
 
         return view('bullwhipeffect.index');
     }
-
 
     public function create()
     {

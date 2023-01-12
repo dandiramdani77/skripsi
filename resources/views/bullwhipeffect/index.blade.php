@@ -30,7 +30,6 @@
                         <thead>
                             <th width="5%">No</th>
                             <th>Tanggal</th>
-                            <th>Kategori</th>
                             <th>Nilai Bullwhip Effect</th>
                             <th width="15%"><i class="fa fa-cog"></i>Aksi</th>
                     </table>
@@ -52,7 +51,7 @@
                         <thead>
                             <th width="5%">No</th>
                             <th>Periode</th>
-                            <th>Nama</th>
+                            <th>Nama Kategori</th>
                             <th>Jumlah Jual</th>
                             <th>Jumlah</th>
                         </thead>
@@ -77,7 +76,7 @@
                 serverSide: true,
                 autoWidth: false,
                 ajax: {
-                    url: '{{ route('order.data') }}',
+                    url: '{{ route('bullwhipeffect.index') }}',
                 },
                 columns: [{
                         data: 'DT_RowIndex',
@@ -85,30 +84,11 @@
                         sortable: false
                     },
                     {
-                        data: 'tanggal'
+                        data: 'created_at'
                     },
                     {
-                        data: 'nama_kategori'
+                        data: 'bullwhip_effect'
                     },
-                    {
-                        data: 'nilai_be'
-                    },
-                    {
-                        data: 'total_item'
-                    },
-                    {
-                        data: 'total_harga'
-                    },
-                    {
-                        data: 'diskon'
-                    },
-                    {
-                        data: 'bayar'
-                    },
-                    {
-                        data: 'status_order'
-                    },
-
                     {
                         data: 'aksi',
                         searchable: false,
@@ -117,35 +97,20 @@
 
                 ]
             });
-
-            $('.table-distributor').DataTable();
-            table1 = $('.table-detail').DataTable({
-                processing: true,
-                bSort: false,
-                dom: 'Brt',
-                columns: [{
-                        data: 'DT_RowIndex',
-                        searchable: false,
-                        sortable: false
-                    },
-                    {
-                        data: 'kode_produk'
-                    },
-                    {
-                        data: 'nama_produk'
-                    },
-                    {
-                        data: 'harga'
-                    },
-                    {
-                        data: 'jumlah'
-                    },
-                    {
-                        data: 'subtotal'
-                    },
-                ]
-            })
         });
+
+        table1 = $('.table-detail').DataTable({
+            processing: true,
+            bSort: false,
+            dom: 'Brt',
+            columns: [
+                {data: 'DT_RowIndex', searchable: false, sortable: false},
+                {data: 'periode'},
+                {data: 'kategori.nama_kategori'},
+                {data: 'jumlah_jual'},
+                {data: 'jumlah'},
+            ]
+        })
 
         function addForm() {
             $('#modal-distributor').modal('show');
