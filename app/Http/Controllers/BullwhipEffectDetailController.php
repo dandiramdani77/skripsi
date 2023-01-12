@@ -13,9 +13,9 @@ class BullwhipEffectDetailController extends Controller
     public function index()
     {
         $id_order = session('id');
-        $produk = Kategori::orderBy('nama_kategori')->get();
+        $kategori = Kategori::orderBy('nama_kategori')->get();
 
-        return view('bullwhipeffect_details.index', compact('id_order', 'produk'));
+        return view('bullwhipeffect_details.index', compact('id_order', 'kategori'));
     }
 
     public function data($id)
@@ -42,9 +42,6 @@ class BullwhipEffectDetailController extends Controller
             $total_item += $item->jumlah;
         }
         $data[] = [
-            'kode_produk' => '
-                <div class="total hide">'. $total .'</div>
-                <div class="total_item hide">'. $total_item .'</div>',
             'nama_kategori' => '',
             'periode' => '',
             'jumlah_jual' => '',
@@ -55,20 +52,20 @@ class BullwhipEffectDetailController extends Controller
         return datatables()
             ->of($data)
             ->addIndexColumn()
-            ->rawColumns(['aksi', 'kode_produk', 'nama_kategori', 'jumlah_jual','jumlah', 'periode'])
+            ->rawColumns(['aksi', 'nama_kategori', 'jumlah_jual','jumlah', 'periode'])
             ->make(true);
     }
 
     public function store(Request $request)
     {
-        $produk = Kategori::where('id_kategori', $request->id_kategori)->first();
-        if (! $produk) {
+        $kategori = Kategori::where('id_kategori', $request->id_kategori)->first();
+        if (! $kategori) {
             return response()->json('Data gagal disimpan', 400);
         }
 
         $detail = new BullwhipEffectDetail();
         $detail->bullwhip_effect_id = $request->bullwhip_effect_id;
-        $detail->id_kategori = $produk->id_kategori;
+        $detail->id_kategori = $kategori->id_kategori;
         $detail->periode = Carbon::now()->format('Y-m-d');
         $detail->jumlah_jual = 1;
         $detail->jumlah = 1;

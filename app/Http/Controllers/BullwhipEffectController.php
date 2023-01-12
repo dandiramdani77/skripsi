@@ -11,11 +11,11 @@ class BullwhipEffectController extends Controller
 {
     public function index()
     {
-        $order = Kategori::with('bullwhipeffect')->orderBy('created_at', 'desc')->get();
+        $be= Kategori::with('bullwhipeffect')->orderBy('created_at', 'desc')->get();
         // return response()->json($order);
         if (request()->ajax()) {
             return datatables()
-            ->of($order)
+            ->of($be)
             ->addIndexColumn()
             ->editColumn('nama_kategori', function ($row) {
                 return '<td rowspan="' . $row->bullwhipeffect->count() . '">' . $row->nama_kategori . '</td>';
@@ -68,13 +68,13 @@ class BullwhipEffectController extends Controller
 
     public function destroy($id)
     {
-        $order = BullwhipEffect::find($id);
-        $detail    = BullwhipEffectDetail::where('bullwhip_effect_id', $order->id)->get();
+        $be= BullwhipEffect::find($id);
+        $detail    = BullwhipEffectDetail::where('bullwhip_effect_id', $be->id)->get();
         foreach ($detail as $item) {
             $item->delete();
         }
 
-        $order->delete();
+        $be->delete();
 
         return response(null, 204);
     }
