@@ -31,6 +31,8 @@
                             <th width="5%">No</th>
                             <th>Tanggal</th>
                             <th>Nilai Bullwhip Effect</th>
+                            <th>Parameter</th>
+                            <th>Keterangan</th>
                             <th width="15%"><i class="fa fa-cog"></i>Aksi</th>
                     </table>
                 </div>
@@ -53,7 +55,7 @@
                             <th>Periode</th>
                             <th>Nama Kategori</th>
                             <th>Jumlah Jual</th>
-                            <th>Jumlah</th>
+                            <th>Jumlah Order</th>
                         </thead>
                     </table>
                 </div>
@@ -90,6 +92,12 @@
                         data: 'bullwhip_effect'
                     },
                     {
+                        data: 'parameter'
+                    },
+                    {
+                        data: 'status_order'
+                    },
+                    {
                         data: 'aksi',
                         searchable: false,
                         sortable: false
@@ -103,12 +111,23 @@
             processing: true,
             bSort: false,
             dom: 'Brt',
-            columns: [
-                {data: 'DT_RowIndex', searchable: false, sortable: false},
-                {data: 'periode'},
-                {data: 'kategori.nama_kategori'},
-                {data: 'jumlah_jual'},
-                {data: 'jumlah'},
+            columns: [{
+                    data: 'DT_RowIndex',
+                    searchable: false,
+                    sortable: false
+                },
+                {
+                    data: 'periode'
+                },
+                {
+                    data: 'kategori.nama_kategori'
+                },
+                {
+                    data: 'jumlah_jual'
+                },
+                {
+                    data: 'jumlah'
+                },
             ]
         })
 

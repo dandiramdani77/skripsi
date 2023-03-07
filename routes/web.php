@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\{
     BullwhipEffectController,
+    BullwhipEffect2Controller,
     BullwhipEffectDetailController,
+    BullwhipEffectDetail2Controller,
     DashboardController,
     KategoriController,
     LaporanController,
@@ -61,12 +63,19 @@ Route::group(['middleware' => 'auth'], function () {
         // Route::delete('/penjualan/{id}', [PenjualanController::class, 'destroy'])->name('penjualan.destroy');
 
         Route::resource('/bullwhipeffect', BullwhipEffectController::class);
+        Route::resource('/bullwhipeffect2', BullwhipEffect2Controller::class);
 
         Route::get('/bullwhipeffect_details/{id}/data', [BullwhipEffectDetailController::class, 'data'])->name('bullwhipeffect_details.data');
         Route::get('/bullwhipeffect_details/loadform/{diskon}/{total}', [BullwhipEffectDetailController::class, 'loadForm'])->name('bullwhipeffect_details.load_form');
         Route::post('/bullwhipeffect_details/beUpdate', [BullwhipEffectDetailController::class, 'beUpdate'])->name('bullwhipeffect_details.beUpdate');
         Route::resource('/bullwhipeffect_details', BullwhipEffectDetailController::class)
             ->except('create', 'show', 'edit');
+
+        Route::get('/bullwhipeffect_details2/{id}/data', [BullwhipEffectDetail2Controller::class, 'data'])->name('bullwhipeffect_details2.data');
+        Route::get('/bullwhipeffect_details2/loadform/{diskon}/{total}', [BullwhipEffectDetail2Controller::class, 'loadForm'])->name('bullwhipeffect_details2.load_form');
+        Route::post('/bullwhipeffect_details2/beUpdate', [BullwhipEffectDetail2Controller::class, 'beUpdate'])->name('bullwhipeffect_details2.beUpdate');
+        Route::resource('/bullwhipeffect_details2', BullwhipEffectDetail2Controller::class)
+            ->except('create', 'show', 'edit');    
     });
 
     Route::group(['middleware' => 'level:1,2'], function () {

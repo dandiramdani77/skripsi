@@ -67,7 +67,7 @@
                         <th>Kategori</th>
                         <th>Tanggal</th>
 
-                        <th width="8%">Jumlah Jual/Hari</th>
+                        <th width="8%">Jumlah Jual/Bulan</th>
                         <th width="8%">Jumlah Order</th>
                         <th width="15%"><i class="fa fa-cog"></i>Aksi</th>
                     </thead>

@@ -17,6 +17,7 @@ class CreateBullwhipEffectsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('id_user');
             $table->integer('total_item');
+            $table->string('parameter');
             $table->string('status_order');
             $table->string('is_ordered')->default(0);
             $table->decimal('bullwhip_effect', 15, 3)->nullable();

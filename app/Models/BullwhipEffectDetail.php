@@ -18,4 +18,5 @@ class BullwhipEffectDetail extends Model
     {
         return $this->belongsTo(BullwhipEffect::class);
     }
+
 }

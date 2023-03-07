@@ -40,6 +40,7 @@ class BullwhipEffectController extends Controller
     {
         $bullwhipEffect = new BullwhipEffect();
         $bullwhipEffect->id_user = auth()->id();
+        $bullwhipEffect->parameter='1.1';
         $bullwhipEffect->status_order='Pending';
         $bullwhipEffect->total_item=0;
         $bullwhipEffect->save();
