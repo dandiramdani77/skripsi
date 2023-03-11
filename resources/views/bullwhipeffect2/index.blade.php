@@ -8,7 +8,7 @@
 
 @section('breadcrumb')
     @parent
-    <li class="active">Nilai Bullwhip Effect Sebelum Peramalan</li>
+    <li class="active">Nilai Bullwhip Effect Setelah Peramalan</li>
 @endsection
 
 @section('content')

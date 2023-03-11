@@ -10,8 +10,8 @@ class BullwhipEffectController extends Controller
 {
     public function index()
     {
-        $bullwhipEffect = BullwhipEffect::orderBy('created_at', 'desc')->get();
-
+        $bullwhipEffect = BullwhipEffect::getEffectsWithCategoryName()->orderBy('id', 'asc')->get();
+    
         if (request()->ajax()) {
             return datatables()
             ->of($bullwhipEffect)

@@ -30,7 +30,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ route('bullwhipeffect2.index', []) }}">
                     <i class="fa fa-area-chart"></i> <span>Setelah Peramalan</span>
                 </a>
             </li>

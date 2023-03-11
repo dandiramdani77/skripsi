@@ -12,9 +12,9 @@ class BullwhipEffect extends Model
 
    
 
-    public function bullwhip_effect_detail()
+    public function bullwhip_effect_detail2()
     {
-        return $this->hasMany(BullwhipEffectDetail::class);
+        return $this->hasMany(BullwhipEffectDetail2::class);
     }
     public function user()
     {
@@ -27,9 +27,9 @@ class BullwhipEffect extends Model
 
     public function scopeGetEffectsWithCategoryName($query)
     {
-        return $query->join('bullwhip_effect_details', 'bullwhip_effects.id', '=', 'bullwhip_effect_details.bullwhip_effect_id')
-                     ->join('kategori', 'bullwhip_effect_details.id_kategori', '=', 'kategori.id_kategori')
-                     ->select('bullwhip_effects.*', 'kategori.nama_kategori as nama_kategori')
-                     ->distinct('bullwhip_effects.id');
+        return $query->join('bullwhip_effect_details2', 'bullwhip_effects2.id', '=', 'bullwhip_effect_details2.bullwhip_effect_id')
+                     ->join('kategori', 'bullwhip_effect_details2.id_kategori', '=', 'kategori.id_kategori')
+                     ->select('bullwhip_effects2.*', 'kategori.nama_kategori as nama_kategori')
+                     ->distinct('bullwhip_effects2.id');
     }
 }
