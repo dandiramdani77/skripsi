@@ -4,16 +4,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBullwhipEffectDetails2Table extends Migration
+class CreateHitungRamalTable extends Migration
 {
-    /**
+     /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('bullwhip_effect_details2', function (Blueprint $table) {
+        Schema::create('hitung_ramal', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('periode');
             $table->unsignedBigInteger('bullwhip_effect_id');
@@ -22,7 +22,7 @@ class CreateBullwhipEffectDetails2Table extends Migration
             $table->bigInteger('jumlah');
             $table->timestamps();
 
-            $table->foreign('bullwhip_effect_id', 'bullwhip_effect_details2_bullwhip_effect_id_foreign')
+            $table->foreign('bullwhip_effect_id', 'hitung_ramal_bullwhip_effect_id_foreign')
                 ->references('id')
                 ->on('bullwhip_effects2')
                 ->onDelete('cascade');
@@ -36,6 +36,6 @@ class CreateBullwhipEffectDetails2Table extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bullwhip_effect_details2');
+        Schema::dropIfExists('hitung_ramal');
     }
 }

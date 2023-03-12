@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BullwhipEffectDetail2 extends Model
+class HitungRamal extends Model
 {
     use HasFactory;
+    protected $table = 'hitung_ramal';
     protected $fillable = ['id_kategori', 'bullwhip_effect_id'];
     public function kategori()
     {

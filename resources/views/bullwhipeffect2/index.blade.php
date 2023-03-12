@@ -3,7 +3,7 @@
 @include('sweetalert::alert')
 
 @section('title')
-    Nilai Bullwhip Effect
+    Nilai Bullwhip Effect Setelah Peramalan
 @endsection
 
 @section('breadcrumb')
@@ -17,10 +17,10 @@
             <div class="box">
                 <div class="box-header with-border">
                     {{-- @if (auth()->user()->level == 2) --}}
-                    <a href="{{ route('bullwhipeffect.create') }}" class="btn btn-success btn-xs btn-flat"><i
+                    <a href="{{ route('bullwhipeffect2.create') }}" class="btn btn-success btn-xs btn-flat"><i
                             class="fa fa-plus-circle"></i> Tambah Data Baru</a>
                     @empty(!session('id'))
-                        <a href="{{ route('bullwhipeffect_details.index') }}" class="btn btn-info btn-xs btn-flat"><i
+                        <a href="{{ route('hitung_ramal.index') }}" class="btn btn-info btn-xs btn-flat"><i
                                 class="fa fa-pencil"></i> Perhitungan Aktif</a>
                     @endempty
                     {{-- @endif --}}
@@ -64,7 +64,7 @@
         </div>
     </div>
 
-    @includeIf('bulwhipeffect.detail')
+    @includeIf('bulwhipeffect2.detail')
 @endsection
 
 @push('scripts')
@@ -79,7 +79,7 @@
                 serverSide: true,
                 autoWidth: false,
                 ajax: {
-                    url: '{{ route('bullwhipeffect.index') }}',
+                    url: '{{ route('bullwhipeffect2.index') }}',
                 },
                 columns: [{
                         data: 'DT_RowIndex',

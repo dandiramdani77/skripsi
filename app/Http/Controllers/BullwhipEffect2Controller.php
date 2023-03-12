@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\BullwhipEffect2;
-use App\Models\BullwhipEffectDetail2;
+use App\Models\HitungRamal;
 
 class BullwhipEffect2Controller extends Controller
 {
@@ -22,8 +22,8 @@ class BullwhipEffect2Controller extends Controller
             ->addColumn('aksi', function ($bullwhipEffect2) {
                 $btn = '
                 <div class="btn-group">
-                    <button onclick="showDetail(`'. route('bullwhipeffect.show', $bullwhipEffect2->id) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i> Lihat </button>
-                    <button onclick="deleteData(`'. route('bullwhipeffect.destroy', $bullwhipEffect2->id) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i> Hapus </button>
+                    <button onclick="showDetail(`'. route('bullwhipeffect2.show', $bullwhipEffect2->id) .'`)" class="btn btn-xs btn-info btn-flat"><i class="fa fa-eye"></i> Lihat </button>
+                    <button onclick="deleteData(`'. route('bullwhipeffect2.destroy', $bullwhipEffect2->id) .'`)" class="btn btn-xs btn-danger btn-flat"><i class="fa fa-trash"></i> Hapus </button>
                 </div>
                 ';
 
@@ -33,7 +33,7 @@ class BullwhipEffect2Controller extends Controller
             ->make(true);
         }
 
-        return view('bullwhipeffect.index');
+        return view('bullwhipeffect2.index');
     }
 
     public function create()
@@ -47,7 +47,7 @@ class BullwhipEffect2Controller extends Controller
 
         session(['id' => $bullwhipEffect2->id]);
 
-        return redirect()->route('bullwhipeffect_details.index');
+        return redirect()->route('hitung_ramal.index');
     }
 
     public function store(Request $request)
@@ -55,12 +55,12 @@ class BullwhipEffect2Controller extends Controller
         $bullwhipEffect2 = BullwhipEffect2::findOrFail($request->id);
         $bullwhipEffect2->update();
 
-        return redirect()->route('bullwhipeffect.index');
+        return redirect()->route('bullwhipeffect2.index');
     }
 
     public function show($id)
     {
-        $detail = BullwhipEffectDetail2::with('kategori')->where('bullwhip_effect_id', $id)->get();
+        $detail = HitungRamal::with('kategori')->where('bullwhip_effect_id', $id)->get();
 
         return datatables()
             ->of($detail)
@@ -77,7 +77,7 @@ class BullwhipEffect2Controller extends Controller
     public function destroy($id)
     {
         $be= BullwhipEffect2::find($id);
-        $detail    = BullwhipEffectDetail2::where('bullwhip_effect_id', $be->id)->get();
+        $detail    = HitungRamal::where('bullwhip_effect_id', $be->id)->get();
         foreach ($detail as $item) {
             $item->delete();
         }

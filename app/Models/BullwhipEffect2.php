@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class BullwhipEffect extends Model
+class BullwhipEffect2 extends Model
 {
     use HasFactory;
 
-   
+    protected $table = 'bullwhip_effects2';
 
-    public function bullwhip_effect_detail2()
+    public function hitungramal()
     {
-        return $this->hasMany(BullwhipEffectDetail2::class);
+        return $this->hasMany(HitungRamal::class);
     }
     public function user()
     {
@@ -22,13 +22,13 @@ class BullwhipEffect extends Model
     }
     public function scopeGetEffectsWithCategories($query)
     {
-        return $query->with('bullwhip_effect_detail.kategori');
+        return $query->with('hitung_ramal.kategori');
     }
 
     public function scopeGetEffectsWithCategoryName($query)
     {
-        return $query->join('bullwhip_effect_details2', 'bullwhip_effects2.id', '=', 'bullwhip_effect_details2.bullwhip_effect_id')
-                     ->join('kategori', 'bullwhip_effect_details2.id_kategori', '=', 'kategori.id_kategori')
+        return $query->join('hitung_ramal', 'bullwhip_effects2.id', '=', 'hitung_ramal.bullwhip_effect_id')
+                     ->join('kategori', 'hitung_ramal.id_kategori', '=', 'kategori.id_kategori')
                      ->select('bullwhip_effects2.*', 'kategori.nama_kategori as nama_kategori')
                      ->distinct('bullwhip_effects2.id');
     }
